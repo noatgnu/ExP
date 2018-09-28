@@ -1,12 +1,126 @@
 
 <div class="card">
   <div class="card-body">
-    <quill-editor [modules]="options" [(ngModel)]="block" format="json" (onEditorCreated)="getEditor($event)"></quill-editor>
+    <quill-editor [modules]="options" [(ngModel)]="content" format="json" (onEditorCreated)="getEditor($event)"></quill-editor>
+    <div class="row mt-4">
+      <div class="col-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-9">
+                <h5 class="card-title">
+                  Input Materials
+                </h5>
+              </div>
+              <div class="col-3 text-right">
+                <button class="btn btn-sm btn-success" (click)="addInput()">+</button>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="input.length >0">
+              <div class="col-4">
+                Material Name
+              </div>
+              <div class="col-2">
+                Amount
+              </div>
+              <div class="col-2">
+                Unit
+              </div>
+              <div class="col-1">
+              </div>
+              <div class="col-2">
+                Total
+              </div>
+            </div>
+            <div *ngFor="let i of input" class="form-row mt-2">
+              <div class="form-group col-4">
+                <input type="text" [(ngModel)]="i.Name" class="form-control" placeholder="Material Name">
+              </div>
+              <div class="form-group col-2">
+                <input type="number" [(ngModel)]="i.Amount" class="form-control" placeholder="Amount">
+              </div>
+              <div class="form-group col-2">
+                <input type="text" [(ngModel)]="i.Unit" class="form-control" placeholder="Unit">
+              </div>
+              <div class="form-group col-1">
+                <div class="form-text">
+                  x{{form.value['repeat'] + 1}}
+                </div>
+              </div>
+              <div class="form-group col-2">
+                <div class="form-text">
+                  {{(form.value['repeat'] + 1) * i.Amount}} {{i.Unit}}
+                </div>
+              </div>
+              <div class="col-1 text-center">
+                <button type="button" class="btn btn-sm btn-danger" (click)="deleteElement(i, input)">-</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-9">
+                <h5 class="card-title">
+                  Output Materials
+                </h5>
+              </div>
+              <div class="col-3 text-right">
+                <button class="btn btn-sm btn-success" (click)="addOutput()">+</button>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="output.length >0">
+              <div class="col-4">
+                Material Name
+              </div>
+              <div class="col-2">
+                Amount
+              </div>
+              <div class="col-2">
+                Unit
+              </div>
+              <div class="col-1">
+              </div>
+              <div class="col-2">
+                Total
+              </div>
+            </div>
+            <div *ngFor="let i of output" class="form-row mt-2">
+              <div class="form-group col-4">
+                <input type="text" [(ngModel)]="i.Name" class="form-control" placeholder="Material Name">
+              </div>
+              <div class="form-group col-2">
+                <input type="number" [(ngModel)]="i.Amount" class="form-control" placeholder="Amount">
+              </div>
+              <div class="form-group col-2">
+                <input type="text" [(ngModel)]="i.Unit" class="form-control" placeholder="Unit">
+              </div>
+              <div class="form-group col-1">
+                <div class="form-text">
+                  x{{form.value['repeat'] + 1}}
+                </div>
+              </div>
+              <div class="form-group col-2">
+                <div class="form-text">
+                  {{(form.value['repeat'] + 1) * i.Amount}} {{i.Unit}}
+                </div>
+              </div>
+              <div class="col-1 text-center">
+                <button type="button" class="btn btn-sm btn-danger" (click)="deleteElement(i, output)">-</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row mt-4">
       <div class="col-4">
-        <form [formGroup]="form">
+        <form [formGroup]="form" (ngSubmit)="submit()">
           <div class="form-row">
-            <div class="form-group">
+            <div class="form-group col-8">
               <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
                   <div class="input-group-text">
@@ -14,6 +128,16 @@
                   </div>
                 </div>
                 <input type="text" formControlName="name" class="form-control">
+              </div>
+            </div>
+            <div class="form-group col-4">
+              <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    Repeat
+                  </div>
+                </div>
+                <input type="number" formControlName="repeat" class="form-control">
               </div>
             </div>
           </div>
@@ -32,7 +156,7 @@
                     D
                   </div>
                 </div>
-                <input type="number" formControlName="days" class="form-control">
+                <input type="number" formControlName="days" class="form-control" [min]="0">
               </div>
             </div>
             <div class="form-group col-4">
@@ -42,7 +166,7 @@
                     H
                   </div>
                 </div>
-                <input type="number" formControlName="hours" class="form-control">
+                <input type="number" formControlName="hours" class="form-control" [min]="0" [max]="24">
               </div>
             </div>
             <div class="form-group col-4">
@@ -52,75 +176,12 @@
                     S
                   </div>
                 </div>
-                <input type="number" formControlName="seconds" class="form-control">
+                <input type="number" formControlName="seconds" class="form-control" [min]="0" [max]="60">
               </div>
             </div>
           </div>
+          <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Submit</button>
         </form>
-      </div>
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">
-              Input Materials
-            </h5>
-            <button class="btn btn-sm btn-success" (click)="addInput()">+</button>
-            <div *ngFor="let i of input" class="form-row mt-2">
-              <div class="form-group col-8">
-                <div class="input-group input-group-sm">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      Name
-                    </div>
-                  </div>
-                  <input type="number" [(ngModel)]="i.Name" class="form-control">
-                </div>
-              </div>
-              <div class="form-group col-4">
-                <div class="input-group input-group-sm">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      Amount
-                    </div>
-                  </div>
-                  <input type="number" [(ngModel)]="i.Amount" class="form-control">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">
-              Output Materials
-            </h5>
-            <button class="btn btn-sm btn-success" (click)="addOutput()">+</button>
-            <div *ngFor="let i of output" class="form-row mt-2">
-              <div class="form-group col-8">
-                <div class="input-group input-group-sm">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      Name
-                    </div>
-                  </div>
-                  <input type="number" [(ngModel)]="i.Name" class="form-control">
-                </div>
-              </div>
-              <div class="form-group col-4">
-                <div class="input-group input-group-sm">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      Amount
-                    </div>
-                  </div>
-                  <input type="number" [(ngModel)]="i.Amount" class="form-control">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 

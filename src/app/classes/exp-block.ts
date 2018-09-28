@@ -2,13 +2,29 @@ import {ExpInventory} from './exp-inventory';
 import {ExpTime} from './exp-time';
 
 export class ExpBlock {
-  constructor(Name: string, Time: ExpTime, Inventory: ExpInventory, Content, TimeTracked: boolean) {
+  constructor(Name?: string, Time?: ExpTime, Inventory?: ExpInventory, Content?, TimeTracked?: boolean, Repeat?: number) {
     this._Name = Name;
     this._Time = Time;
     this._Inventory = Inventory;
     this._Content = Content;
     this._TimeTracked = TimeTracked;
+    this._Repeat = Repeat;
   }
+  get Repeat(): number {
+    return this._Repeat;
+  }
+
+  set Repeat(value: number) {
+    this._Repeat = value;
+  }
+  get next(): ExpBlock {
+    return this._next;
+  }
+
+  set next(value: ExpBlock) {
+    this._next = value;
+  }
+
   get TimeTracked(): boolean {
     return this._TimeTracked;
   }
@@ -53,4 +69,6 @@ export class ExpBlock {
   private _Inventory: ExpInventory;
   private _Content;
   private _TimeTracked: boolean;
+  private _next: ExpBlock;
+  private _Repeat: number;
 }

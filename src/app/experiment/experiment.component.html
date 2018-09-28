@@ -1,0 +1,30 @@
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">
+      Summary
+    </h5>
+    Title: {{experiment.Name}}
+    <div class="row">
+      <div class="col-6">
+        Material:
+        <div *ngFor="let e of experiment.totalMaterial">
+          - {{e.Name}} {{e.Amount}} {{e.Unit}}
+        </div>
+      </div>
+      <div class="col-6">
+        <div>
+          Total Experiment Time: {{experiment.totalTime.Days}} Days {{experiment.totalTime.Hours}} Hours {{experiment.totalTime.Seconds}} Seconds
+        </div>
+        <div>
+          Total Unique Experiment Blocks: {{experiment.Blocks.length}}
+        </div>
+        <div>
+          Total Experiment Blocks: {{experiment.totalBlocks}}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<app-block *ngFor="let i of experiment.Blocks" [block]="i"></app-block>

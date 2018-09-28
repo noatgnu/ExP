@@ -8,13 +8,19 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { BlockComponent } from './block/block.component';
 import { TimerComponent } from './timer/timer.component';
 import { EditorComponent } from './editor/editor.component';
+import { ExpLoaderComponent } from './exp-loader/exp-loader.component';
+import {FileService} from './services/file.service';
+import { ExperimentComponent } from './experiment/experiment.component';
+import {HelperService} from './services/helper.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     BlockComponent,
     TimerComponent,
-    EditorComponent
+    EditorComponent,
+    ExpLoaderComponent,
+    ExperimentComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +29,7 @@ import { EditorComponent } from './editor/editor.component';
     QuillModule,
     NgbModule
   ],
-  providers: [],
+  providers: [FileService, HelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

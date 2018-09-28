@@ -1,7 +1,7 @@
 import {ExpMaterial} from './exp-material';
 
 export class ExpInventory {
-  constructor(InputMaterials: ExpMaterial[], OutputMaterials: ExpMaterial[]) {
+  constructor(InputMaterials?: ExpMaterial[], OutputMaterials?: ExpMaterial[]) {
     this._InputMaterials = InputMaterials;
     this._OutputMaterials = OutputMaterials;
   }
