@@ -1,7 +1,11 @@
 import {ExpInventory} from './exp-inventory';
 import {ExpTime} from './exp-time';
-
+import {v4} from 'uuid';
 export class ExpBlock {
+  get id(): string {
+    return this._id;
+  }
+  private _id: string;
   constructor(Name?: string, Time?: ExpTime, Inventory?: ExpInventory, Content?, TimeTracked?: boolean, Repeat?: number) {
     this._Name = Name;
     this._Time = Time;
@@ -9,6 +13,7 @@ export class ExpBlock {
     this._Content = Content;
     this._TimeTracked = TimeTracked;
     this._Repeat = Repeat;
+    this._id = v4();
   }
   get Repeat(): number {
     return this._Repeat;

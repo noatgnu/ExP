@@ -11,7 +11,7 @@ import {ExpInventory} from '../classes/exp-inventory';
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.css']
+  styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit {
   @Output() ExpBlock = new EventEmitter<ExpBlock>();
@@ -23,7 +23,7 @@ export class EditorComponent implements OnInit {
 
   input: ExpMaterial[] = [];
   output: ExpMaterial[] = [];
-  time = new ExpTime(0, 0, 0);
+  time = new ExpTime(0, 0, 0, 0);
   constructor(private _fb: FormBuilder) {
 
   }
@@ -65,19 +65,19 @@ export class EditorComponent implements OnInit {
 
         ['clean'],                                         // remove formatting button
 
-        ['link', 'image', 'video']                         // link and image, video
       ]
     };
   }
 
   createForm() {
     this.form = this._fb.group({
-      'name': ['Untitled Block', Validators.required],
+      'name': [this.block.Name || 'Untitled', Validators.required],
       'timeTracked': [false],
       'repeat': [0],
       'time': this._fb.group({
         'days': [this.time.Days],
         'hours': [this.time.Hours],
+        'minutes': [this.time.Minutes],
         'seconds': [this.time.Seconds]
       })
     });
@@ -107,6 +107,7 @@ export class EditorComponent implements OnInit {
     this.block.Time = new ExpTime(
       this.form.value['time']['days'],
       this.form.value['time']['hours'],
+      this.form.value['time']['minutes'],
       this.form.value['time']['seconds']
     );
     this.block.Inventory = new ExpInventory(

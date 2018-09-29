@@ -4,7 +4,7 @@ import {FileService} from '../services/file.service';
 @Component({
   selector: 'app-exp-loader',
   templateUrl: './exp-loader.component.html',
-  styleUrls: ['./exp-loader.component.css']
+  styleUrls: ['./exp-loader.component.scss']
 })
 export class ExpLoaderComponent implements OnInit {
   placeholder = '';

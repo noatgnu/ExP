@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card mb-2 {{borderStatus.get(active)}}" (mouseover)="setActive()" (mouseout)="setInActive()" #expBlock>
   <div class="card-body">
     <div class="row">
       <div class="col-8">
@@ -10,8 +10,57 @@
         <button class="btn btn-secondary" type="button" (click)="toggleEdit()">Edit</button>
       </div>
     </div>
-    <div class="ql-container">
-      <div class="ql-editor" #blockContent [innerHTML]="content">
+    <div class="row">
+      <div class="col-8">
+        <div class="ql-container">
+          <div class="ql-editor" #blockContent [innerHTML]="content">
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div *ngIf="block.Repeat">
+          <h4 class="text-muted">x{{block.Repeat + 1}}</h4>
+          <hr>
+        </div>
+        <div *ngIf="block.Time">
+          Total Time:
+          {{block.Time.Days}}d {{block.Time.Hours}}h {{block.Time.Minutes}}m {{block.Time.Seconds}}s
+          <hr>
+        </div>
+        <div *ngIf="block.Inventory">
+          <h6>Materials</h6>
+          <hr>
+          <div>
+            Input:
+            <div *ngFor="let e of block.Inventory.InputMaterials">
+              <div class="text-sm-left">
+                {{e.Name}} {{e.Amount}}{{e.Unit}}
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div>
+            Output:
+            <div *ngFor="let e of block.Inventory.OutputMaterials">
+              <div class="text-sm-left">
+                {{e.Name}} {{e.Amount}}{{e.Unit}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="card-footer text-right">
+    <div ngbDropdown>
+      <button type="button" class="btn btn-outline-primary" id="addBlockDropdown" ngbDropdownToggle>
+        Add Block
+      </button>
+      <div ngbDropdownMenu aria-labelledby="addBlockDropdown">
+        <button class="dropdown-item" (click)="addNewBlock('before')">Before</button>
+        <button class="dropdown-item" (click)="addNewBlock('after')">After</button>
       </div>
     </div>
   </div>
