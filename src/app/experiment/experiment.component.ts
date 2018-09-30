@@ -4,6 +4,8 @@ import {ExpBlock} from '../classes/exp-block';
 import {Subscription} from 'rxjs';
 import {HelperService} from '../services/helper.service';
 import {ExpMaterial} from '../classes/exp-material';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ExpEditorComponent} from '../exp-editor/exp-editor.component';
 
 @Component({
   selector: 'app-experiment',
@@ -16,7 +18,7 @@ export class ExperimentComponent implements OnInit, OnDestroy {
   newBlockSubscription: Subscription;
   material;
   a = {};
-  constructor(private helper: HelperService) { }
+  constructor(private helper: HelperService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.summarize();
@@ -74,8 +76,14 @@ export class ExperimentComponent implements OnInit, OnDestroy {
 
   }
 
-  addBlockBetween(position) {
+  openModal() {
+    const modalRef = this.modalService.open(ExpEditorComponent);
+    modalRef.componentInstance.experiment = this.experiment;
+    modalRef.result.then((result) => {
+      this.experiment.Name = result['name'];
+    }, (reason) => {
 
+    });
   }
 
   getArray(materialId, mapMaterial: Map<string, Map<number, ExpMaterial>>) {

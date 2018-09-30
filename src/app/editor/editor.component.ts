@@ -103,13 +103,15 @@ export class EditorComponent implements OnInit {
     array.splice(i, 1);
   }
   submit() {
-    this.block.Name = this.form.value['name'];
-    this.block.Time = new ExpTime(
+    let time = new ExpTime(
       this.form.value['time']['days'],
       this.form.value['time']['hours'],
       this.form.value['time']['minutes'],
       this.form.value['time']['seconds']
     );
+    time = time.StandardizeTime(time);
+    this.block.Name = this.form.value['name'];
+    this.block.Time = time;
     this.block.Inventory = new ExpInventory(
       this.input.slice(),
       this.output.slice()

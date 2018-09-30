@@ -12,6 +12,7 @@ import { ExpLoaderComponent } from './exp-loader/exp-loader.component';
 import {FileService} from './services/file.service';
 import { ExperimentComponent } from './experiment/experiment.component';
 import {HelperService} from './services/helper.service';
+import { ExpEditorComponent } from './exp-editor/exp-editor.component';
 
 @NgModule({
   declarations: [
@@ -20,8 +21,10 @@ import {HelperService} from './services/helper.service';
     TimerComponent,
     EditorComponent,
     ExpLoaderComponent,
-    ExperimentComponent
+    ExperimentComponent,
+    ExpEditorComponent
   ],
+  entryComponents: [ExpEditorComponent],
   imports: [
     BrowserModule,
     FormsModule,

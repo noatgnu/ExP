@@ -1,33 +1,41 @@
 <div class="card mb-4">
   <div class="card-body">
-    <h5 class="card-title">
-      Summary
-    </h5>
-    Title: {{experiment.Name}}
+    <div class="row">
+      <div class="col-4">
+        <h5 class="card-title">
+          Summary
+        </h5>
+      </div>
+      <div class="col-8 text-right">
+        <button type="button" class="btn btn-secondary" (click)="openModal()">Edit</button>
+      </div>
+    </div>
+
+    Title:{{experiment.Name}}
     <div class="row">
       <div class="col-6">
         Material:
         <div *ngFor="let e of experiment.totalMaterial">
-          <a class="text-primary">{{e.Name}} {{e.Amount}} {{e.Unit}}</a>
+          <a class="text-primary">{{e.Name}} {{e.Amount}}{{e.Unit}}</a>
           <span *ngIf="material.inMap[e.Name+e.Unit]">
-            <span *ngFor="let k of material.inMap[e.Name+e.Unit]" class="badge badge-primary ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount}}</span>
+            <span ngbTooltip="{{experiment.Blocks[k.id].Name}}" *ngFor="let k of material.inMap[e.Name+e.Unit]" class="badge badge-primary ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount}}</span>
           </span>
           <span *ngIf="material.outMap[e.Name+e.Unit]">
-            <span *ngFor="let k of material.outMap[e.Name+e.Unit]" class="badge badge-danger ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount}}</span>
+            <span ngbTooltip="{{experiment.Blocks[k.id].Name}}" *ngFor="let k of material.outMap[e.Name+e.Unit]" class="badge badge-danger ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount}}</span>
           </span>
         </div>
         <div *ngFor="let e of material.out">
           <div *ngIf="material.inMap[e.Name+e.Unit] === undefined">
-            <a class="text-danger">{{e.Name}} {{e.Amount}} {{e.Unit}}</a>
+            <a class="text-danger">{{e.Name}} {{e.Amount}}{{e.Unit}}</a>
             <span *ngIf="material.outMap[e.Name+e.Unit]">
-              <span *ngFor="let k of material.outMap[e.Name+e.Unit]" class="badge badge-danger ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount}}</span>
+              <span ngbTooltip="{{experiment.Blocks[k.id].Name}}" *ngFor="let k of material.outMap[e.Name+e.Unit]" class="badge badge-danger ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount}}</span>
             </span>
           </div>
         </div>
       </div>
       <div class="col-6">
         <div>
-          Total Experiment Time: {{experiment.totalTime.Days}} Days {{experiment.totalTime.Hours}} Hours {{experiment.totalTime.Minutes}} Hours {{experiment.totalTime.Seconds}} Seconds
+          Total Experiment Time: {{experiment.totalTime.Days}} Days {{experiment.totalTime.Hours}} Hours {{experiment.totalTime.Minutes}} Minutes {{experiment.totalTime.Seconds}} Seconds
         </div>
         <div>
           Total Unique Experiment Blocks: {{experiment.Blocks.length}}

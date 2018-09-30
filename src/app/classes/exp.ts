@@ -3,7 +3,7 @@ import {ExpTime} from './exp-time';
 import {ExpMaterial} from './exp-material';
 
 export class Exp {
-  private time = {Hours: 24, Minutes: 60, Seconds: 60};
+
   constructor(Name: string, Blocks: ExpBlock[]) {
     this._Name = Name;
     this._Blocks = Blocks;
@@ -29,32 +29,15 @@ export class Exp {
   totalMaterial: ExpMaterial[];
   totalBlocks: number;
   CalculateTotalTime(): ExpTime {
-    const totalTime: ExpTime = new ExpTime(0, 0, 0, 0);
+    let totalTime: ExpTime = new ExpTime(0, 0, 0, 0);
     for (const i of this.Blocks) {
       if (i.Time !== undefined) {
-        for (const i2 of Object.keys(totalTime)) {
+        for (const i2 of ['Days', 'Hours', 'Minutes', 'Seconds']) {
           totalTime[i2] += (i.Time[i2] || 0) * (i.Repeat + 1);
         }
       }
     }
-    if (totalTime['Seconds'] > 0) {
-      if (totalTime['Seconds'] >= this.time['Seconds']) {
-        totalTime['Minutes'] += Math.floor(totalTime['Seconds'] / this.time['Seconds']);
-        totalTime['Seconds'] = totalTime['Seconds'] % this.time['Seconds'];
-      }
-    }
-    if (totalTime['Minutes'] > 0) {
-      if (totalTime['Minutes'] >= this.time['Minutes']) {
-        totalTime['Hours'] += Math.floor(totalTime['Minutes'] / this.time['Minutes']);
-        totalTime['Minutes'] = totalTime['Minutes'] % this.time['Minutes'];
-      }
-    }
-    if (totalTime['Hours'] > 0) {
-      if (totalTime['Hours'] > this.time['Hours']) {
-        totalTime['Days'] = totalTime['Hours'] / this.time['Hours'];
-        totalTime['Seconds'] = totalTime['Seconds'] % this.time['Seconds'];
-      }
-    }
+    totalTime = totalTime.StandardizeTime(totalTime);
     return totalTime;
   }
 
