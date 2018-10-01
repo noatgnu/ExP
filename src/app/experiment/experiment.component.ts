@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Exp} from '../classes/exp';
 import {ExpBlock} from '../classes/exp-block';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {HelperService} from '../services/helper.service';
 import {ExpMaterial} from '../classes/exp-material';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ExpEditorComponent} from '../exp-editor/exp-editor.component';
+import {ExpRun} from '../classes/exp-run';
 
 @Component({
   selector: 'app-experiment',
@@ -18,9 +19,29 @@ export class ExperimentComponent implements OnInit, OnDestroy {
   newBlockSubscription: Subscription;
   material;
   a = {};
-  constructor(private helper: HelperService, private modalService: NgbModal) { }
+  channel: BroadcastChannel;
+  runSubscription: Subscription;
+  channelMap: Map<string, BroadcastChannel>;
+  constructor(private helper: HelperService, private modalService: NgbModal) {
+    /*this.channel = new BroadcastChannel('experimentChannel');
+    this.channel.onmessage = (event) => {
+      console.log(event);
+      if (event.data.message === 'ready') {
+        this.channelMap.set(event.data.id, new BroadcastChannel(event.data.id));
+        const date = new Date();
+        const e = new ExpRun(date, this.experiment);
+        console.log(e);
+        this.channelMap.get(event.data.id).postMessage(e);
+        console.log(event.data);
+      }
+    };*/
+  }
 
   ngOnInit() {
+    this.channelMap = new Map<string, BroadcastChannel>();
+    this.helper.MaterialsArray = [
+      // new ExpMaterial('test', 0, 'ml')
+    ];
     this.summarize();
     this.updateSubscription = this.helper.updateTrigger.subscribe((data) => {
       if (data) {
@@ -42,6 +63,22 @@ export class ExperimentComponent implements OnInit, OnDestroy {
           break;
       }
     });
+    this.runSubscription = this.helper.triggerRun.subscribe((data) => {
+      const date = new Date();
+      const e = new ExpRun(date, this.experiment);
+      localStorage.setItem(data, JSON.stringify(e));
+      /*this.channelMap.set(data, new BroadcastChannel(data));
+      this.channelMap.get(data).onmessage = (event) => {
+        if (event.data === 'ready') {
+          const date = new Date();
+          const e = new ExpRun(date, this.experiment);
+          console.log(e);
+          this.channelMap.get(data).postMessage(e);
+        }
+      };*/
+      const winRef = window.open('/#/run/' + data, '_blank');
+
+    });
   }
 
   private summarize() {
@@ -54,6 +91,7 @@ export class ExperimentComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.updateSubscription.unsubscribe();
     this.newBlockSubscription.unsubscribe();
+    this.runSubscription.unsubscribe();
   }
 
   updateSummary() {

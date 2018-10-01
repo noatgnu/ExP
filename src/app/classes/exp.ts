@@ -5,26 +5,13 @@ import {ExpMaterial} from './exp-material';
 export class Exp {
 
   constructor(Name: string, Blocks: ExpBlock[]) {
-    this._Name = Name;
-    this._Blocks = Blocks;
-  }
-  get Name(): string {
-    return this._Name;
+    this.Name = Name;
+    this.Blocks = Blocks;
   }
 
-  set Name(value: string) {
-    this._Name = value;
-  }
 
-  get Blocks(): ExpBlock[] {
-    return this._Blocks;
-  }
-
-  set Blocks(value: ExpBlock[]) {
-    this._Blocks = value;
-  }
-  private _Name: string;
-  private _Blocks: ExpBlock[];
+  Name: string;
+  Blocks: ExpBlock[];
   totalTime: ExpTime;
   totalMaterial: ExpMaterial[];
   totalBlocks: number;

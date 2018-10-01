@@ -6,6 +6,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExpMaterial} from '../classes/exp-material';
 import {ExpTime} from '../classes/exp-time';
 import {ExpInventory} from '../classes/exp-inventory';
+import {Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {HelperService} from '../services/helper.service';
 
 
 @Component({
@@ -24,8 +27,9 @@ export class EditorComponent implements OnInit {
   input: ExpMaterial[] = [];
   output: ExpMaterial[] = [];
   time = new ExpTime(0, 0, 0, 0);
-  constructor(private _fb: FormBuilder) {
-
+  materialsArray: ExpMaterial[];
+  constructor(private _fb: FormBuilder, private helper: HelperService) {
+    this.materialsArray = this.helper.MaterialsArray;
   }
 
   ngOnInit() {
@@ -135,5 +139,25 @@ export class EditorComponent implements OnInit {
         this.form.value['timeTracked'],
         this.form.value['repeat']));*/
     this.ExpBlock.emit(this.block);
+  }
+
+  TypeAheadSearch (MaterialsArray: ExpMaterial[]) {
+    return (text: Observable<string>) =>
+      text.pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        map(
+          term => term.length < 2 ? []
+            : MaterialsArray.filter(
+              v => v.Name.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1).slice(0, 10))
+      );
+  }
+
+  TypeAheadFormatter (result: ExpMaterial) {
+    return result.Name;
+  }
+
+  TypeAheadInputFormatter (x: ExpMaterial) {
+    return x.Name;
   }
 }

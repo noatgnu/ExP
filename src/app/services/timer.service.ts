@@ -8,7 +8,7 @@ export class TimerService {
   timers: Map<string, Map<number, ExpTime>>;
   constructor() { }
 
-  getTimer(expId: string, startTime: number) {
+  GetTimer(expId: string, startTime: number) {
     if (this.timers.has(expId)) {
       if (this.timers.get(expId).has(startTime)) {
         return this.timers.get(expId).get(startTime);
@@ -18,6 +18,7 @@ export class TimerService {
     } else {
       this.timers.set(expId, new Map<number, ExpTime>());
       this.timers.get(expId).set(startTime, new ExpTime(0, 0, 0, 0));
+      return this.timers.get(expId).get(startTime);
     }
   }
 }

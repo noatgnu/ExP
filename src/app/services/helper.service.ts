@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {Exp} from '../classes/exp';
+import {ExpMaterial} from '../classes/exp-material';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,11 @@ export class HelperService {
   updateTrigger = this._updateTrigger.asObservable();
   private _newBlockTrigger = new Subject<any>();
   newBlockTrigger = this._newBlockTrigger.asObservable();
-  private _modalOpener = new Subject<Exp>();
-  modalOpener = this._newBlockTrigger.asObservable();
+  private _triggerRun = new Subject<string>();
+  triggerRun = this._triggerRun.asObservable();
   blockMap = new Map<string, Subject<boolean>>();
+
+  MaterialsArray: ExpMaterial[];
   constructor() { }
 
   update(data) {
@@ -24,7 +27,11 @@ export class HelperService {
   }
 
   openModal(exp: Exp) {
-    console.log(exp);
-    this._modalOpener.next(exp);
+
   }
+
+  Run(blockId: string) {
+    this._triggerRun.next(blockId);
+  }
+
 }

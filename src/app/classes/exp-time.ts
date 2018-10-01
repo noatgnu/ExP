@@ -37,4 +37,21 @@ export class ExpTime {
     return totalTime;
   }
 
+  ToSeconds() {
+    let seconds = 0;
+    if (this.Days) {
+      seconds += this.Days * this.time.Hours * this.time.Minutes * this.time.Seconds;
+    }
+    if (this.Hours) {
+      seconds += this.time.Hours * this.time.Minutes * this.time.Seconds;
+    }
+    if (this.Minutes) {
+      seconds += this.time.Minutes * this.time.Seconds;
+    }
+    if (this.Minutes) {
+      seconds += this.time.Seconds;
+    }
+    return seconds;
+  }
+
 }

@@ -13,6 +13,15 @@ import {FileService} from './services/file.service';
 import { ExperimentComponent } from './experiment/experiment.component';
 import {HelperService} from './services/helper.service';
 import { ExpEditorComponent } from './exp-editor/exp-editor.component';
+import {RouterModule, Routes} from '@angular/router';
+import { ExperimentRunComponent } from './experiment-run/experiment-run.component';
+import { HomeComponent } from './home/home.component';
+import {TimerService} from './services/timer.service';
+
+const appRoutes: Routes = [
+  {path: '', component: HomeComponent},
+  {path: 'run/:id', component: ExperimentRunComponent}
+];
 
 @NgModule({
   declarations: [
@@ -22,7 +31,9 @@ import { ExpEditorComponent } from './exp-editor/exp-editor.component';
     EditorComponent,
     ExpLoaderComponent,
     ExperimentComponent,
-    ExpEditorComponent
+    ExpEditorComponent,
+    ExperimentRunComponent,
+    HomeComponent
   ],
   entryComponents: [ExpEditorComponent],
   imports: [
@@ -30,9 +41,12 @@ import { ExpEditorComponent } from './exp-editor/exp-editor.component';
     FormsModule,
     ReactiveFormsModule,
     QuillModule,
-    NgbModule
+    NgbModule,
+    RouterModule.forRoot(
+      appRoutes, {useHash: true}
+    )
   ],
-  providers: [FileService, HelperService],
+  providers: [FileService, HelperService, TimerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

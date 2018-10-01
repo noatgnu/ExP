@@ -1,0 +1,65 @@
+<nav class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">
+    {{expRun?.Experiment.Name}}
+  </a>
+  <div id="navbarSupportedContent">
+    <button type="button" class="btn btn-outline-danger text-light mr-2" *ngIf="timer">{{timer.Days}}D {{timer.Hours}}H {{timer.Minutes}}M {{timer.Seconds}}S</button>
+    <span class="mr-2">
+      <button type="button" class="btn btn-outline-light" [disabled]="disableBackward">{{'<'}}</button>
+    </span>
+    <span>
+      <button type="button" class="btn btn-outline-light" [disabled]="disableForward">{{'>'}}</button>
+    </span>
+  </div>
+</nav>
+
+<div class="container-fluid mt-4">
+  <div class="card" *ngIf="expRun">
+    <div class="card-body">
+      <h5 class="card-title">
+        {{expRun.Experiment.Blocks[currentInd].Name}}
+      </h5>
+      <div class="row">
+        <div class="col-8">
+          <div class="ql-container">
+            <div class="ql-editor" [innerHTML]="currentContent"></div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div *ngIf="expRun.Experiment.Blocks[currentInd].Repeat">
+            <h4 class="text-muted">x{{expRun.Experiment.Blocks[currentInd].Repeat + 1}}</h4>
+            <hr>
+          </div>
+          <div *ngIf="expRun.Experiment.Blocks[currentInd].Time">
+            Total Time:
+            {{expRun.Experiment.Blocks[currentInd].Time.Days}}d {{expRun.Experiment.Blocks[currentInd].Time.Hours}}h {{expRun.Experiment.Blocks[currentInd].Time.Minutes}}m {{expRun.Experiment.Blocks[currentInd].Time.Seconds}}s
+            <hr>
+          </div>
+          <div *ngIf="expRun.Experiment.Blocks[currentInd].Inventory">
+            <h6>Materials</h6>
+            <hr>
+            <div>
+              Input:
+              <div *ngFor="let e of expRun.Experiment.Blocks[currentInd].Inventory.InputMaterials">
+                <div class="text-sm-left">
+                  {{e.Name}} {{e.Amount}}{{e.Unit}}
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div>
+              Output:
+              <div *ngFor="let e of expRun.Experiment.Blocks[currentInd].Inventory.OutputMaterials">
+                <div class="text-sm-left">
+                  {{e.Name}} {{e.Amount}}{{e.Unit}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+

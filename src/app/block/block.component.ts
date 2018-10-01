@@ -18,7 +18,10 @@ export class BlockComponent implements OnInit, OnDestroy {
   signalWatcher = new Subject<boolean>();
   signalSubscription: Subscription;
   borderStatus = new Map<boolean, string>([[true, 'border-primary'], [false, 'border-secondary']]);
-  constructor(private helper: HelperService) { }
+  channel: BroadcastChannel;
+  constructor(private helper: HelperService) {
+    // this.channel = new BroadcastChannel(this.block.id);
+  }
   ngOnInit() {
     this.helper.blockMap.set(this.block.id, this.signalWatcher);
     this.signalSubscription = this.signalWatcher.subscribe((data) => {
@@ -53,5 +56,9 @@ export class BlockComponent implements OnInit, OnDestroy {
 
   setInActive() {
     this.active = false;
+  }
+
+  triggerRun() {
+    this.helper.Run(this.block.id);
   }
 }
