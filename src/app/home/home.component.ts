@@ -33,4 +33,8 @@ export class HomeComponent implements OnInit {
     this.fileService.extractProperties(e.Blocks, experiment.Blocks, ExpBlock);
     this.fileService.updateExperiment(experiment);
   }
+
+  clearExperiment() {
+    this.fileService.updateExperiment(new Exp('Untitled', [new ExpBlock('Untitled')]));
+  }
 }
