@@ -17,6 +17,7 @@ import {RouterModule, Routes} from '@angular/router';
 import { ExperimentRunComponent } from './experiment-run/experiment-run.component';
 import { HomeComponent } from './home/home.component';
 import {TimerService} from './services/timer.service';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -39,6 +40,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     QuillModule,
     NgbModule,

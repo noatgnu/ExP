@@ -6,6 +6,7 @@ import * as FileSaver from 'file-saver';
 import {ExpInventory} from '../classes/exp-inventory';
 import {ExpMaterial} from '../classes/exp-material';
 import {ExpTime} from '../classes/exp-time';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import {ExpTime} from '../classes/exp-time';
 export class FileService {
   private _experimentSource = new BehaviorSubject<Exp>(new Exp('Untitled', [new ExpBlock('Untitled')]));
   experimentSourceReader = this._experimentSource.asObservable();
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   async loadFile(file) {
     return new Promise<string>((resolve, reject) => {
@@ -58,5 +59,9 @@ export class FileService {
         }
       }
     }
+  }
+
+  getFileByURL(url: string) {
+    return this.http.get(url, {responseType: 'text', observe: 'response'});
   }
 }

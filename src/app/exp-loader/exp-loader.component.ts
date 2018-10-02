@@ -14,6 +14,7 @@ import {ExpTime} from '../classes/exp-time';
 export class ExpLoaderComponent implements OnInit {
   placeholder = '';
   result;
+  url;
   constructor(private _fh: FileService) { }
   @Output() file: EventEmitter<any> = new EventEmitter();
   ngOnInit() {
@@ -26,6 +27,13 @@ export class ExpLoaderComponent implements OnInit {
       const jsonObj = JSON.parse(this.result);
       this.file.emit(jsonObj);
     }
+  }
+
+  loadURL(url: string) {
+    this._fh.getFileByURL(url).subscribe((data) => {
+      const jsonObj = JSON.parse(data.body);
+      this.file.emit(jsonObj);
+    });
   }
 
   private extractProperties(jsonObj, experiment, object) {

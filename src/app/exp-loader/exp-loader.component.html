@@ -1,5 +1,14 @@
 <div class="form-group">
   <div class="input-group">
+    <input type="text" class="form-control" aria-label="url-input" aria-labelledby="label-json-input" placeholder="Experiment URL" [(ngModel)]="url">
+    <div class="input-group-append">
+      <button class="btn" type="button" (click)="loadURL(url)">Load</button>
+    </div>
+  </div>
+</div>
+<h5 class="text-muted">OR.</h5>
+<div class="form-group">
+  <div class="input-group">
     <div class="input-group-prepend">
       <span class="input-group-text" id="label-fasta-input">Load Experiment</span>
     </div>
