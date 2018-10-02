@@ -3,12 +3,12 @@
     {{expRun?.Experiment.Name}}
   </a>
   <div id="navbarSupportedContent">
-    <button type="button" class="btn btn-outline-danger text-light mr-2" *ngIf="timer">{{timer.Days}}D {{timer.Hours}}H {{timer.Minutes}}M {{timer.Seconds}}S</button>
+    <button type="button" class="btn btn-outline-danger text-light mr-2" *ngIf="timer">{{timer.total.Days}}D {{timer.total.Hours}}H {{timer.total.Minutes}}M {{timer.total.Seconds}}S</button>
     <span class="mr-2">
-      <button type="button" class="btn btn-outline-light" [disabled]="disableBackward">{{'<'}}</button>
+      <button type="button" class="btn btn-outline-light" [disabled]="disableBackward" (click)="move(-1)"><span *ngIf="disableBackward">End </span>{{'<'}}</button>
     </span>
     <span>
-      <button type="button" class="btn btn-outline-light" [disabled]="disableForward">{{'>'}}</button>
+      <button type="button" class="btn btn-outline-light" [disabled]="disableForward" (click)="move(1)"><span *ngIf="disableForward">End </span>{{'>'}}</button>
     </span>
   </div>
 </nav>
@@ -35,6 +35,27 @@
             {{expRun.Experiment.Blocks[currentInd].Time.Days}}d {{expRun.Experiment.Blocks[currentInd].Time.Hours}}h {{expRun.Experiment.Blocks[currentInd].Time.Minutes}}m {{expRun.Experiment.Blocks[currentInd].Time.Seconds}}s
             <hr>
           </div>
+          <div>
+            Individual Timers:
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col-4">#</th>
+                  <th scope="col-4">Timer</th>
+                  <th scope="col-4"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let r of repeat" class="{{r.active}}">
+                  <th scope="row">x{{r.repeatId + 1}}</th>
+                  <td>{{r.timer.Days}}d {{r.timer.Hours}}h {{r.timer.Minutes}}m {{r.timer.Seconds}}s</td>
+                  <td><button class="btn btn-sm" (click)="setActiveRepeat(r.repeatId)" [disabled]="r.repeatId === currentRepeat">Start</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <hr>
+          </div>
+
           <div *ngIf="expRun.Experiment.Blocks[currentInd].Inventory">
             <h6>Materials</h6>
             <hr>

@@ -18,7 +18,7 @@
         <div *ngFor="let e of experiment.totalMaterial">
           <a class="text-primary">{{e.Name}} {{e.Amount}}{{e.Unit}}</a>
           <span *ngIf="material.inMap[e.Name+e.Unit]">
-            <span ngbTooltip="{{experiment.Blocks[k.id].Name}}" *ngFor="let k of material.inMap[e.Name+e.Unit]" class="badge badge-primary ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount}}</span>
+            <span ngbTooltip="{{experiment.Blocks[k.id].Name}}" *ngFor="let k of material.inMap[e.Name+e.Unit]" class="badge badge-primary ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount * (experiment.Blocks[k.id].Repeat + 1)}}</span>
           </span>
           <span *ngIf="material.outMap[e.Name+e.Unit]">
             <span ngbTooltip="{{experiment.Blocks[k.id].Name}}" *ngFor="let k of material.outMap[e.Name+e.Unit]" class="badge badge-danger ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount}}</span>
@@ -28,7 +28,7 @@
           <div *ngIf="material.inMap[e.Name+e.Unit] === undefined">
             <a class="text-danger">{{e.Name}} {{e.Amount}}{{e.Unit}}</a>
             <span *ngIf="material.outMap[e.Name+e.Unit]">
-              <span ngbTooltip="{{experiment.Blocks[k.id].Name}}" *ngFor="let k of material.outMap[e.Name+e.Unit]" class="badge badge-danger ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount}}</span>
+              <span ngbTooltip="{{experiment.Blocks[k.id].Name}}" *ngFor="let k of material.outMap[e.Name+e.Unit]" class="badge badge-danger ml-2" (click)="navigateToBlock(k.id)">{{k.value.Amount * (experiment.Blocks[k.id].Repeat + 1)}}</span>
             </span>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Exp} from '../classes/exp';
 import {ExpBlock} from '../classes/exp-block';
 import {Observable, Subscription} from 'rxjs';
@@ -14,7 +14,15 @@ import {ExpRun} from '../classes/exp-run';
   styleUrls: ['./experiment.component.scss']
 })
 export class ExperimentComponent implements OnInit, OnDestroy {
-  experiment = new Exp('Untitled', [new ExpBlock('Untitled')]);
+  get experiment(): Exp {
+    return this._experiment;
+  }
+
+  private _experiment: Exp;
+
+  @Input() set experiment(value: Exp) {
+    this._experiment = value;
+  }
   updateSubscription: Subscription;
   newBlockSubscription: Subscription;
   material;
@@ -49,23 +57,23 @@ export class ExperimentComponent implements OnInit, OnDestroy {
       }
     });
     this.newBlockSubscription = this.helper.newBlockTrigger.subscribe((data) => {
-      const ind = this.experiment.Blocks.indexOf(data.block);
+      const ind = this._experiment.Blocks.indexOf(data.block);
       switch (data.position) {
         case 'before':
-          this.experiment.Blocks.splice(ind, 0, new ExpBlock('Untitled'));
+          this._experiment.Blocks.splice(ind, 0, new ExpBlock('Untitled'));
           break;
         case 'after':
-          if (this.experiment.Blocks.length - 1 === ind) {
-            this.experiment.Blocks.push(new ExpBlock('Untitled'));
+          if (this._experiment.Blocks.length - 1 === ind) {
+            this._experiment.Blocks.push(new ExpBlock('Untitled'));
           } else {
-            this.experiment.Blocks.splice(ind + 1, 0, new ExpBlock('Untitled'));
+            this._experiment.Blocks.splice(ind + 1, 0, new ExpBlock('Untitled'));
           }
           break;
       }
     });
     this.runSubscription = this.helper.triggerRun.subscribe((data) => {
       const date = new Date();
-      const e = new ExpRun(date, this.experiment);
+      const e = new ExpRun(date, this._experiment);
       localStorage.setItem(data, JSON.stringify(e));
       /*this.channelMap.set(data, new BroadcastChannel(data));
       this.channelMap.get(data).onmessage = (event) => {
@@ -82,10 +90,10 @@ export class ExperimentComponent implements OnInit, OnDestroy {
   }
 
   private summarize() {
-    this.experiment.totalTime = this.experiment.CalculateTotalTime();
-    this.material = this.experiment.CalculateTotalMaterials();
-    this.experiment.totalMaterial = this.material.in;
-    this.experiment.totalBlocks = this.experiment.CalculateTotalBlocks();
+    this._experiment.totalTime = this._experiment.CalculateTotalTime();
+    this.material = this._experiment.CalculateTotalMaterials();
+    this._experiment.totalMaterial = this.material.in;
+    this._experiment.totalBlocks = this._experiment.CalculateTotalBlocks();
   }
 
   ngOnDestroy() {
@@ -99,16 +107,16 @@ export class ExperimentComponent implements OnInit, OnDestroy {
   }
 
   addBlockAfter() {
-    this.experiment.Blocks.push(new ExpBlock('Untitled'));
+    this._experiment.Blocks.push(new ExpBlock('Untitled'));
   }
 
   addBlockBefore(position) {
     let array: ExpBlock[] = [];
     if (position > 0) {
-      array = this.experiment.Blocks.slice(0, position);
+      array = this._experiment.Blocks.slice(0, position);
       array.push(new ExpBlock('Untitled'));
       array.concat();
-      this.experiment.Blocks.slice(0, position);
+      this._experiment.Blocks.slice(0, position);
 
     }
 
@@ -116,9 +124,9 @@ export class ExperimentComponent implements OnInit, OnDestroy {
 
   openModal() {
     const modalRef = this.modalService.open(ExpEditorComponent);
-    modalRef.componentInstance.experiment = this.experiment;
+    modalRef.componentInstance._experiment = this._experiment;
     modalRef.result.then((result) => {
-      this.experiment.Name = result['name'];
+      this._experiment.Name = result['name'];
     }, (reason) => {
 
     });
@@ -130,6 +138,6 @@ export class ExperimentComponent implements OnInit, OnDestroy {
   }
 
   navigateToBlock(id) {
-    this.helper.blockMap.get(this.experiment.Blocks[id].id).next(true);
+    this.helper.blockMap.get(this._experiment.Blocks[id].id).next(true);
   }
 }

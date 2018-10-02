@@ -11,7 +11,16 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./exp-editor.component.scss']
 })
 export class ExpEditorComponent implements OnInit, OnDestroy {
-  @Input() experiment: Exp;
+  get experiment(): Exp {
+    return this._experiment;
+  }
+  private _experiment: Exp;
+
+  @Input() set experiment(value: Exp) {
+    this._experiment = value;
+
+  }
+
   form: FormGroup;
   constructor(private modalService: NgbModal, private helper: HelperService, public activeModal: NgbActiveModal, private _fb: FormBuilder) {
   }
@@ -28,9 +37,12 @@ export class ExpEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.form = this._fb.group({
-      'name': [this.experiment.Name, Validators.required]
-    });
+    this.createForm();
   }
 
+  createForm() {
+    this.form = this._fb.group({
+      'name': [this._experiment.Name, Validators.required]
+    });
+  }
 }

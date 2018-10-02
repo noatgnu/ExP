@@ -49,7 +49,7 @@ export class Exp {
             inputMap[this.Blocks[i].Inventory.InputMaterials[i2].Name + this.Blocks[i].Inventory.InputMaterials[i2].Unit] = [{id: i, value: this.Blocks[i].Inventory.InputMaterials[i2]}];
           } else {
             expMap.get(this.Blocks[i].Inventory.InputMaterials[i2].Name + this.Blocks[i].Inventory.InputMaterials[i2].Unit).Amount += this.Blocks[i].Inventory.InputMaterials[i2].Amount * this.Blocks[i].Repeat;
-            inputMap[this.Blocks[i].Inventory.InputMaterials[i2].Name + this.Blocks[i].Inventory.InputMaterials[i2].Unit].push({id: i, value: this.Blocks[i].Inventory.InputMaterials[i2]})
+            inputMap[this.Blocks[i].Inventory.InputMaterials[i2].Name + this.Blocks[i].Inventory.InputMaterials[i2].Unit].push({id: i, value: this.Blocks[i].Inventory.InputMaterials[i2]});
           }
         }
         for (let i2 = 0; i2 < this.Blocks[i].Inventory.OutputMaterials.length; i2 ++) {

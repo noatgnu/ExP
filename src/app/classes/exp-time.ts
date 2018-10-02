@@ -38,6 +38,7 @@ export class ExpTime {
   }
 
   ToSeconds() {
+    console.log(this.Seconds);
     let seconds = 0;
     if (this.Days) {
       seconds += this.Days * this.time.Hours * this.time.Minutes * this.time.Seconds;
@@ -48,7 +49,7 @@ export class ExpTime {
     if (this.Minutes) {
       seconds += this.time.Minutes * this.time.Seconds;
     }
-    if (this.Minutes) {
+    if (this.Seconds) {
       seconds += this.time.Seconds;
     }
     return seconds;
