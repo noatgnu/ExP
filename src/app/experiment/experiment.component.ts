@@ -22,6 +22,8 @@ export class ExperimentComponent implements OnInit, OnDestroy {
 
   @Input() set experiment(value: Exp) {
     this._experiment = value;
+    this.summarize();
+    console.log(this.material);
   }
   updateSubscription: Subscription;
   newBlockSubscription: Subscription;
