@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subject, Subscription} from 'rxjs';
 import {ExpRun} from '../classes/exp-run';
@@ -92,6 +92,22 @@ export class ExperimentRunComponent implements OnInit, OnDestroy {
   disableBackward = true;
   repeat = [];
   interval;
+  @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
+    console.log(event.key);
+    switch (event.key) {
+      case 'ArrowRight':
+        if (this.disableForward) {
+          break;
+        }
+        break;
+      case 'ArrowLeft':
+        if (this.disableBackward) {
+          break;
+        }
+        break;
+    }
+  }
+
   constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef, private timerService: TimerService) {
 
   }

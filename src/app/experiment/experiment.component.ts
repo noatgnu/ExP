@@ -22,6 +22,11 @@ export class ExperimentComponent implements OnInit, OnDestroy {
 
   @Input() set experiment(value: Exp) {
     this._experiment = value;
+    this.helper.MaterialsArray = [];
+    for (const b of value.Blocks) {
+      this.helper.updateMaterial(b);
+    }
+    console.log(this.helper.MaterialsArray);
     this.summarize();
     console.log(this.material);
   }

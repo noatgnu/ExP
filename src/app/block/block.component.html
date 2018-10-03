@@ -6,7 +6,7 @@
           {{block.Name}}
         </h5>
       </div>
-      <div class="col-4 text-right">
+      <div class="col-4 text-right" *ngIf="printMode === false">
         <button type="button" class="btn btn-success mr-2" (click)="triggerRun()">Start</button>
         <button class="btn btn-secondary" type="button" (click)="toggleEdit()">Edit</button>
       </div>
@@ -52,7 +52,7 @@
       </div>
     </div>
   </div>
-  <div class="card-footer text-right">
+  <div class="card-footer text-right" *ngIf="printMode === false">
     <div ngbDropdown>
       <button type="button" class="btn btn-outline-primary" id="addBlockDropdown" ngbDropdownToggle>
         Add Block

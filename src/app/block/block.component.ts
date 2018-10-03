@@ -1,4 +1,15 @@
-import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {ExpBlock} from '../classes/exp-block';
 import {QuillDeltaToHtmlConverter} from 'quill-delta-to-html';
 import {HelperService} from '../services/helper.service';
@@ -26,13 +37,14 @@ export class BlockComponent implements OnInit, OnDestroy {
     this._block = value;
   }
 
+  @Input() printMode: boolean;
+
   content = '';
   edit = false;
   active = false;
   signalWatcher = new Subject<boolean>();
   signalSubscription: Subscription;
   borderStatus = new Map<boolean, string>([[true, 'border-primary'], [false, 'border-secondary']]);
-  channel: BroadcastChannel;
   constructor(private helper: HelperService) {
     // this.channel = new BroadcastChannel(this.block.id);
   }
@@ -41,6 +53,7 @@ export class BlockComponent implements OnInit, OnDestroy {
     this.signalSubscription = this.signalWatcher.subscribe((data) => {
       this.expBlock.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+
   }
 
   ngOnDestroy() {
@@ -51,6 +64,7 @@ export class BlockComponent implements OnInit, OnDestroy {
     if (this._block.Content) {
       const converter = new QuillDeltaToHtmlConverter(JSON.parse(this._block.Content)['ops'], {});
       this.content = converter.convert();
+      this.helper.updateMaterial(e);
     }
     this.helper.update(true);
     this.edit = !this.edit;

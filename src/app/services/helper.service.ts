@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {Exp} from '../classes/exp';
 import {ExpMaterial} from '../classes/exp-material';
+import {ExpBlock} from '../classes/exp-block';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class HelperService {
   triggerRun = this._triggerRun.asObservable();
   blockMap = new Map<string, Subject<boolean>>();
 
-  MaterialsArray: ExpMaterial[];
+  MaterialsArray: string[];
   constructor() { }
 
   update(data) {
@@ -34,4 +35,28 @@ export class HelperService {
     this._triggerRun.next(blockId);
   }
 
+  updateMaterial(exp: ExpBlock) {
+    if (exp.Inventory) {
+      if (exp.Inventory.InputMaterials) {
+        for (const i of exp.Inventory.InputMaterials) {
+          const ind = this.MaterialsArray.find((v) => {
+            return v === i.Name;
+          });
+          if (!ind) {
+            this.MaterialsArray.push(i.Name);
+          }
+        }
+      }
+      if (exp.Inventory.OutputMaterials) {
+        for (const i of exp.Inventory.OutputMaterials) {
+          const ind = this.MaterialsArray.find((v) => {
+            return v === i.Name;
+          });
+          if (!ind) {
+            this.MaterialsArray.push(i.Name);
+          }
+        }
+      }
+    }
+  }
 }

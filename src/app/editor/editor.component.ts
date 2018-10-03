@@ -27,9 +27,9 @@ export class EditorComponent implements OnInit {
   input: ExpMaterial[] = [];
   output: ExpMaterial[] = [];
   time = new ExpTime(0, 0, 0, 0);
-  materialsArray: ExpMaterial[];
+
   constructor(private _fb: FormBuilder, private helper: HelperService) {
-    this.materialsArray = this.helper.MaterialsArray;
+
   }
 
   ngOnInit() {
@@ -39,8 +39,14 @@ export class EditorComponent implements OnInit {
       this.content = this.block.Content;
     }
     if (this.block.Inventory) {
-      this.input = this.block.Inventory.InputMaterials;
-      this.output = this.block.Inventory.OutputMaterials;
+      for (const i of this.block.Inventory.InputMaterials) {
+        this.input.push(Object.assign({}, i));
+      }
+      for (const i of this.block.Inventory.OutputMaterials) {
+        this.output.push(Object.assign({}, i));
+      }
+      console.log(this.helper.MaterialsArray);
+      console.log(this.input);
     }
     if (this.block.Time) {
       this.time = this.block.Time;
@@ -141,7 +147,7 @@ export class EditorComponent implements OnInit {
     this.ExpBlock.emit(this.block);
   }
 
-  TypeAheadSearch (MaterialsArray: ExpMaterial[]) {
+  TypeAheadSearch (MaterialsArray = this.helper.MaterialsArray) {
     return (text: Observable<string>) =>
       text.pipe(
         debounceTime(200),
@@ -149,15 +155,19 @@ export class EditorComponent implements OnInit {
         map(
           term => term.length < 2 ? []
             : MaterialsArray.filter(
-              v => v.Name.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1).slice(0, 10))
+              v => v.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1).slice(0, 10))
       );
   }
 
-  TypeAheadFormatter (result: ExpMaterial) {
-    return result.Name;
+  TypeAheadResult () {
+
   }
 
-  TypeAheadInputFormatter (x: ExpMaterial) {
-    return x.Name;
+  TypeAheadFormatter (result: string) {
+    return result;
+  }
+
+  TypeAheadInputFormatter (x: string) {
+    return x;
   }
 }
