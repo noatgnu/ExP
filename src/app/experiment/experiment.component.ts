@@ -61,8 +61,6 @@ export class ExperimentComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (!this.printMode) {
-
-    } else {
       this.channelMap = new Map<string, BroadcastChannel>();
       this.helper.MaterialsArray = [
         // new ExpMaterial('test', 0, 'ml')
@@ -104,6 +102,8 @@ export class ExperimentComponent implements OnInit, OnDestroy {
         const winRef = window.open('/#/run/' + data, '_blank');
 
       });
+    } else {
+
     }
 
   }
