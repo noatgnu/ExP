@@ -6,7 +6,8 @@
           Summary
         </h5>
       </div>
-      <div class="col-8 text-right">
+      <div class="col-8 text-right" *ngIf="printMode === false">
+        <button type="button" class="btn btn-secondary" (click)="openPrint()">Print Mode</button>
         <button type="button" class="btn btn-secondary" (click)="openModal()">Edit</button>
       </div>
     </div>
@@ -44,12 +45,10 @@
           Total Experiment Blocks: {{experiment.totalBlocks}}
         </div>
       </div>
-
     </div>
-
   </div>
 </div>
 
-<app-block *ngFor="let i of experiment.Blocks" [block]="i" [printMode]="false"></app-block>
+<app-block *ngFor="let i of experiment.Blocks" [block]="i" [printMode]="printMode"></app-block>
 
 

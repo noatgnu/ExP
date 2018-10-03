@@ -18,10 +18,12 @@ import { ExperimentRunComponent } from './experiment-run/experiment-run.componen
 import { HomeComponent } from './home/home.component';
 import {TimerService} from './services/timer.service';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { PrintComponent } from './print/print.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'run/:id', component: ExperimentRunComponent}
+  {path: 'run/:id', component: ExperimentRunComponent},
+  {path: 'print/:id', component: PrintComponent}
 ];
 
 @NgModule({
@@ -34,7 +36,8 @@ const appRoutes: Routes = [
     ExperimentComponent,
     ExpEditorComponent,
     ExperimentRunComponent,
-    HomeComponent
+    HomeComponent,
+    PrintComponent
   ],
   entryComponents: [ExpEditorComponent],
   imports: [

@@ -22,14 +22,16 @@ export class ExperimentComponent implements OnInit, OnDestroy {
 
   @Input() set experiment(value: Exp) {
     this._experiment = value;
-    this.helper.MaterialsArray = [];
-    for (const b of value.Blocks) {
-      this.helper.updateMaterial(b);
+    if (!this.printMode) {
+      this.helper.MaterialsArray = [];
+      for (const b of value.Blocks) {
+        this.helper.updateMaterial(b);
+      }
+      this.summarize();
     }
-    console.log(this.helper.MaterialsArray);
-    this.summarize();
-    console.log(this.material);
   }
+
+  @Input() printMode: boolean;
   updateSubscription: Subscription;
   newBlockSubscription: Subscription;
   material;
@@ -37,6 +39,8 @@ export class ExperimentComponent implements OnInit, OnDestroy {
   channel: BroadcastChannel;
   runSubscription: Subscription;
   channelMap: Map<string, BroadcastChannel>;
+
+
   constructor(private helper: HelperService, private modalService: NgbModal) {
     /*this.channel = new BroadcastChannel('experimentChannel');
     this.channel.onmessage = (event) => {
@@ -53,47 +57,50 @@ export class ExperimentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.channelMap = new Map<string, BroadcastChannel>();
-    this.helper.MaterialsArray = [
-      // new ExpMaterial('test', 0, 'ml')
-    ];
-    this.summarize();
-    this.updateSubscription = this.helper.updateTrigger.subscribe((data) => {
-      if (data) {
-        this.summarize();
-      }
-    });
-    this.newBlockSubscription = this.helper.newBlockTrigger.subscribe((data) => {
-      const ind = this._experiment.Blocks.indexOf(data.block);
-      switch (data.position) {
-        case 'before':
-          this._experiment.Blocks.splice(ind, 0, new ExpBlock('Untitled'));
-          break;
-        case 'after':
-          if (this._experiment.Blocks.length - 1 === ind) {
-            this._experiment.Blocks.push(new ExpBlock('Untitled'));
-          } else {
-            this._experiment.Blocks.splice(ind + 1, 0, new ExpBlock('Untitled'));
-          }
-          break;
-      }
-    });
-    this.runSubscription = this.helper.triggerRun.subscribe((data) => {
-      const date = new Date();
-      const e = new ExpRun(date, this._experiment);
-      localStorage.setItem(data, JSON.stringify(e));
-      /*this.channelMap.set(data, new BroadcastChannel(data));
-      this.channelMap.get(data).onmessage = (event) => {
-        if (event.data === 'ready') {
-          const date = new Date();
-          const e = new ExpRun(date, this.experiment);
-          console.log(e);
-          this.channelMap.get(data).postMessage(e);
+    if (!this.printMode) {
+      this.channelMap = new Map<string, BroadcastChannel>();
+      this.helper.MaterialsArray = [
+        // new ExpMaterial('test', 0, 'ml')
+      ];
+      this.summarize();
+      this.updateSubscription = this.helper.updateTrigger.subscribe((data) => {
+        if (data) {
+          this.summarize();
         }
-      };*/
-      const winRef = window.open('/#/run/' + data, '_blank');
+      });
+      this.newBlockSubscription = this.helper.newBlockTrigger.subscribe((data) => {
+        const ind = this._experiment.Blocks.indexOf(data.block);
+        switch (data.position) {
+          case 'before':
+            this._experiment.Blocks.splice(ind, 0, new ExpBlock('Untitled'));
+            break;
+          case 'after':
+            if (this._experiment.Blocks.length - 1 === ind) {
+              this._experiment.Blocks.push(new ExpBlock('Untitled'));
+            } else {
+              this._experiment.Blocks.splice(ind + 1, 0, new ExpBlock('Untitled'));
+            }
+            break;
+        }
+      });
+      this.runSubscription = this.helper.triggerRun.subscribe((data) => {
+        const date = new Date();
+        const e = new ExpRun(date, this._experiment);
+        localStorage.setItem(data, JSON.stringify(e));
+        /*this.channelMap.set(data, new BroadcastChannel(data));
+        this.channelMap.get(data).onmessage = (event) => {
+          if (event.data === 'ready') {
+            const date = new Date();
+            const e = new ExpRun(date, this.experiment);
+            console.log(e);
+            this.channelMap.get(data).postMessage(e);
+          }
+        };*/
+        const winRef = window.open('/#/run/' + data, '_blank');
 
-    });
+      });
+    }
+
   }
 
   private summarize() {
@@ -146,5 +153,10 @@ export class ExperimentComponent implements OnInit, OnDestroy {
 
   navigateToBlock(id) {
     this.helper.blockMap.get(this._experiment.Blocks[id].id).next(true);
+  }
+
+  openPrint() {
+    localStorage.setItem(this.experiment.Name, JSON.stringify(this.experiment));
+    const winRef = window.open('/#/print/' + this.experiment.Name, '_blank');
   }
 }
