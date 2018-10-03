@@ -10,8 +10,22 @@ import {Subject, Subscription} from 'rxjs';
   styleUrls: ['./block.component.scss'],
 })
 export class BlockComponent implements OnInit, OnDestroy {
+  get block(): ExpBlock {
+    return this._block;
+  }
+
+  private _block: ExpBlock;
+
   @ViewChild('expBlock') expBlock: ElementRef;
-  @Input() block: ExpBlock;
+
+  @Input() set block(value: ExpBlock) {
+    if (value.Content) {
+      const converter = new QuillDeltaToHtmlConverter(JSON.parse(value.Content)['ops'], {});
+      this.content = converter.convert();
+    }
+    this._block = value;
+  }
+
   content = '';
   edit = false;
   active = false;
@@ -23,7 +37,7 @@ export class BlockComponent implements OnInit, OnDestroy {
     // this.channel = new BroadcastChannel(this.block.id);
   }
   ngOnInit() {
-    this.helper.blockMap.set(this.block.id, this.signalWatcher);
+    this.helper.blockMap.set(this._block.id, this.signalWatcher);
     this.signalSubscription = this.signalWatcher.subscribe((data) => {
       this.expBlock.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -34,8 +48,8 @@ export class BlockComponent implements OnInit, OnDestroy {
   }
 
   gotBlock(e: ExpBlock) {
-    if (this.block.Content) {
-      const converter = new QuillDeltaToHtmlConverter(JSON.parse(this.block.Content)['ops'], {});
+    if (this._block.Content) {
+      const converter = new QuillDeltaToHtmlConverter(JSON.parse(this._block.Content)['ops'], {});
       this.content = converter.convert();
     }
     this.helper.update(true);
@@ -47,7 +61,7 @@ export class BlockComponent implements OnInit, OnDestroy {
   }
 
   addNewBlock(position) {
-    this.helper.addNewBlock(this.block, position);
+    this.helper.addNewBlock(this._block, position);
   }
 
   setActive() {
@@ -59,6 +73,6 @@ export class BlockComponent implements OnInit, OnDestroy {
   }
 
   triggerRun() {
-    this.helper.Run(this.block.id);
+    this.helper.Run(this._block.id);
   }
 }
