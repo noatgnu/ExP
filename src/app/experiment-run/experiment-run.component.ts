@@ -96,13 +96,21 @@ export class ExperimentRunComponent implements OnInit, OnDestroy {
     console.log(event.key);
     switch (event.key) {
       case 'ArrowRight':
-        if (this.disableForward) {
-          break;
+        if (this.currentRepeat === this.expRun.Experiment.Blocks[this.currentInd].Repeat) {
+          if (this.currentInd !== this.expRun.Experiment.Blocks.length - 1) {
+            this.move(1);
+          }
+        } else {
+          this.currentRepeat ++;
         }
         break;
       case 'ArrowLeft':
-        if (this.disableBackward) {
-          break;
+        if (this.currentRepeat === 0) {
+          if (this.currentInd !== 0) {
+            this.move(-1);
+          }
+        } else {
+          this.currentRepeat --;
         }
         break;
     }
@@ -153,13 +161,10 @@ export class ExperimentRunComponent implements OnInit, OnDestroy {
   }
 
   getTimer(repeatId: number) {
-    console.log(this.repeat[repeatId].startTime);
     return this.timerService.GetTimer(this.expRun.Experiment.Blocks[this.currentInd].id, this.repeat[repeatId].startTime);
   }
 
   setActiveRepeat(repeat: number) {
-    console.log(this.timerService.startTimeMap);
-    console.log(this.timerService.timers);
     this.currentRepeat = repeat;
   }
 }
