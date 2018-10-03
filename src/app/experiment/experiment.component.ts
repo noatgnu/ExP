@@ -22,7 +22,10 @@ export class ExperimentComponent implements OnInit, OnDestroy {
 
   @Input() set experiment(value: Exp) {
     this._experiment = value;
-    if (!this.printMode) {
+    if (this.printMode) {
+
+    } else {
+      console.log(this.printMode);
       this.helper.MaterialsArray = [];
       for (const b of value.Blocks) {
         this.helper.updateMaterial(b);
@@ -58,6 +61,8 @@ export class ExperimentComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (!this.printMode) {
+
+    } else {
       this.channelMap = new Map<string, BroadcastChannel>();
       this.helper.MaterialsArray = [
         // new ExpMaterial('test', 0, 'ml')
