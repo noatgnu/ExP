@@ -19,5 +19,5 @@
 </div>
 
 <div class="container mt-4" *ngIf="expObs | async; let exp">
-  <app-experiment [experiment]="exp"></app-experiment>
+  <app-experiment [experiment]="exp" [printMode]="false"></app-experiment>
 </div>

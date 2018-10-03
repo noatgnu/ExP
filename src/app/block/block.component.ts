@@ -49,7 +49,9 @@ export class BlockComponent implements OnInit, OnDestroy {
     // this.channel = new BroadcastChannel(this.block.id);
   }
   ngOnInit() {
-    this.helper.blockMap.set(this._block.id, this.signalWatcher);
+    if (!this.printMode) {
+      this.helper.blockMap.set(this._block.id, this.signalWatcher);
+    }
     this.signalSubscription = this.signalWatcher.subscribe((data) => {
       this.expBlock.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
