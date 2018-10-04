@@ -27,7 +27,7 @@ export class EditorComponent implements OnInit {
   input: ExpMaterial[] = [];
   output: ExpMaterial[] = [];
   time = new ExpTime(0, 0, 0, 0);
-
+  repeat = 0;
   constructor(private _fb: FormBuilder, private helper: HelperService) {
 
   }
@@ -47,6 +47,9 @@ export class EditorComponent implements OnInit {
       }
       console.log(this.helper.MaterialsArray);
       console.log(this.input);
+    }
+    if (this.block.Repeat) {
+      this.repeat = this.block.Repeat;
     }
     if (this.block.Time) {
       this.time = this.block.Time;
@@ -83,7 +86,7 @@ export class EditorComponent implements OnInit {
     this.form = this._fb.group({
       'name': [this.block.Name || 'Untitled', Validators.required],
       'timeTracked': [false],
-      'repeat': [0],
+      'repeat': [this.repeat],
       'time': this._fb.group({
         'days': [this.time.Days],
         'hours': [this.time.Hours],
