@@ -33,12 +33,10 @@ export class ExpTime {
         totalTime['Hours'] = totalTime['Hours'] % this.time['Hours'];
       }
     }
-    console.log(totalTime);
     return totalTime;
   }
 
   ToSeconds() {
-    console.log(this.Seconds);
     let seconds = 0;
     if (this.Days) {
       seconds += this.Days * this.time.Hours * this.time.Minutes * this.time.Seconds;
