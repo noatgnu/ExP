@@ -7,6 +7,8 @@ import {ExpMaterial} from '../classes/exp-material';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ExpEditorComponent} from '../exp-editor/exp-editor.component';
 import {ExpRun} from '../classes/exp-run';
+import {ExpInventory} from '../classes/exp-inventory';
+import {ExpTime} from '../classes/exp-time';
 
 @Component({
   selector: 'app-experiment',
@@ -75,15 +77,32 @@ export class ExperimentComponent implements OnInit, OnDestroy {
         const ind = this._experiment.Blocks.indexOf(data.block);
         switch (data.position) {
           case 'before':
-            this._experiment.Blocks.splice(ind, 0, new ExpBlock('Untitled'));
+            this._experiment.Blocks.splice(ind, 0, new ExpBlock('Untitled', new ExpTime(0, 0, 0, 0), new ExpInventory([], [])));
             break;
           case 'after':
             if (this._experiment.Blocks.length - 1 === ind) {
-              this._experiment.Blocks.push(new ExpBlock('Untitled'));
+              this._experiment.Blocks.push(new ExpBlock('Untitled', new ExpTime(0, 0, 0, 0), new ExpInventory([], [])));
             } else {
-              this._experiment.Blocks.splice(ind + 1, 0, new ExpBlock('Untitled'));
+              this._experiment.Blocks.splice(ind + 1, 0, new ExpBlock('Untitled', new ExpTime(0, 0, 0, 0), new ExpInventory([], [])));
             }
             break;
+          case 'clone':
+            const inventory = new ExpInventory();
+            inventory.InputMaterials = [];
+            inventory.OutputMaterials = [];
+            if (data.block.Inventory) {
+              for (const i of data.block.Inventory.InputMaterials) {
+                inventory.InputMaterials.push(new ExpMaterial(i.Name, i.Amount, i.Unit));
+              }
+              for (const i of data.block.Inventory.OutputMaterials) {
+                inventory.OutputMaterials.push(new ExpMaterial(i.Name, i.Amount, i.Unit));
+              }
+            }
+            let time = new ExpTime(0, 0, 0, 0);
+            if (data.block.Time) {
+              time = new ExpTime(data.block.Time.Days, data.block.Time.Hours, data.block.Time.Minutes, data.block.Time.Seconds);
+            }
+            this._experiment.Blocks.push(new ExpBlock(data.block.Name, time, inventory, data.block.Content, data.block.TimeTracked, data.block.Repeat));
         }
       });
       this.runSubscription = this.helper.triggerRun.subscribe((data) => {
