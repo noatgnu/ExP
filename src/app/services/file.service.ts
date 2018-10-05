@@ -12,7 +12,7 @@ import {HttpClient} from '@angular/common/http';
   providedIn: 'root'
 })
 export class FileService {
-  private _experimentSource = new BehaviorSubject<Exp>(new Exp('Untitled', [new ExpBlock('Untitled')]));
+  private _experimentSource = new BehaviorSubject<Exp>(new Exp('Untitled', [new ExpBlock('Untitled', new ExpTime(0, 0, 0, 0), new ExpInventory([], []))]));
   experimentSourceReader = this._experimentSource.asObservable();
   constructor(private http: HttpClient) { }
 

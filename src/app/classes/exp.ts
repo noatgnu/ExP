@@ -20,10 +20,11 @@ export class Exp {
     for (const i of this.Blocks) {
       if (i.Time !== undefined) {
         for (const i2 of ['Days', 'Hours', 'Minutes', 'Seconds']) {
-          totalTime[i2] += (i.Time[i2] || 0) * (i.Repeat + 1);
+          totalTime[i2] += (i.Time[i2] || 0) * ((i.Repeat || 0) + 1);
         }
       }
     }
+    console.log(totalTime);
     totalTime = totalTime.StandardizeTime(totalTime);
     return totalTime;
   }

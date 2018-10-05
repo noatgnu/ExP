@@ -3,6 +3,8 @@ import {FileService} from '../services/file.service';
 import {Observable} from 'rxjs';
 import {Exp} from '../classes/exp';
 import {ExpBlock} from '../classes/exp-block';
+import {ExpTime} from '../classes/exp-time';
+import {ExpInventory} from '../classes/exp-inventory';
 
 @Component({
   selector: 'app-home',
@@ -35,6 +37,6 @@ export class HomeComponent implements OnInit {
   }
 
   clearExperiment() {
-    this.fileService.updateExperiment(new Exp('Untitled', [new ExpBlock('Untitled')]));
+    this.fileService.updateExperiment(new Exp('Untitled', [new ExpBlock('Untitled', new ExpTime(0, 0, 0, 0), new ExpInventory([], []))]));
   }
 }
