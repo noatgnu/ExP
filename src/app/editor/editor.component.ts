@@ -28,6 +28,7 @@ export class EditorComponent implements OnInit {
   output: ExpMaterial[] = [];
   time = new ExpTime(0, 0, 0, 0);
   repeat = 0;
+  materialEditor;
   constructor(private _fb: FormBuilder, private helper: HelperService) {
 
   }
@@ -35,6 +36,7 @@ export class EditorComponent implements OnInit {
   ngOnInit() {
     this.createForm();
     this.createEditor();
+    this.createMaterialEditor();
     if (this.block.Content) {
       this.content = this.block.Content;
     }
@@ -45,8 +47,6 @@ export class EditorComponent implements OnInit {
       for (const i of this.block.Inventory.OutputMaterials) {
         this.output.push(Object.assign({}, i));
       }
-      console.log(this.helper.MaterialsArray);
-      console.log(this.input);
     }
     if (this.block.Repeat) {
       this.repeat = this.block.Repeat;
@@ -57,7 +57,6 @@ export class EditorComponent implements OnInit {
   }
 
   createEditor() {
-
     this.options = {
       toolbar: [
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -78,6 +77,14 @@ export class EditorComponent implements OnInit {
 
         ['clean'],                                         // remove formatting button
 
+      ]
+    };
+  }
+
+  createMaterialEditor() {
+    this.materialEditor = {
+      toolbar: [
+        [{ 'script': 'sub'}, { 'script': 'super' }],
       ]
     };
   }
