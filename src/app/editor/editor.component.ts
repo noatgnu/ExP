@@ -34,9 +34,7 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createForm();
-    this.createEditor();
-    this.createMaterialEditor();
+
     if (this.block.Content) {
       this.content = this.block.Content;
     }
@@ -48,12 +46,16 @@ export class EditorComponent implements OnInit {
         this.output.push(Object.assign({}, i));
       }
     }
+    console.log(this.block.Repeat);
     if (this.block.Repeat) {
       this.repeat = this.block.Repeat;
     }
     if (this.block.Time) {
       this.time = this.block.Time;
     }
+    this.createForm();
+    this.createEditor();
+    this.createMaterialEditor();
   }
 
   createEditor() {

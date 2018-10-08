@@ -102,8 +102,16 @@ export class ExperimentComponent implements OnInit, OnDestroy {
             if (data.block.Time) {
               time = new ExpTime(data.block.Time.Days, data.block.Time.Hours, data.block.Time.Minutes, data.block.Time.Seconds);
             }
-            this._experiment.Blocks.push(new ExpBlock(data.block.Name, time, inventory, data.block.Content, data.block.TimeTracked, data.block.Repeat));
+            if (this._experiment.Blocks.length - 1 === ind) {
+              this._experiment.Blocks.push(
+                new ExpBlock(data.block.Name, time, inventory, data.block.Content, data.block.TimeTracked, data.block.Repeat));
+            } else {
+              this._experiment.Blocks.splice(ind + 1, 0,
+                new ExpBlock(data.block.Name, time, inventory, data.block.Content, data.block.TimeTracked, data.block.Repeat));
+            }
+            break;
         }
+        this.summarize();
       });
       this.runSubscription = this.helper.triggerRun.subscribe((data) => {
         const date = new Date();
