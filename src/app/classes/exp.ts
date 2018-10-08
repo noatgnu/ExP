@@ -49,7 +49,7 @@ export class Exp {
             // inputMap.get(this.Blocks[i].Inventory.InputMaterials[i2].Name + this.Blocks[i].Inventory.InputMaterials[i2].Unit).set(i, this.Blocks[i].Inventory.InputMaterials[i2]);
             inputMap[this.Blocks[i].Inventory.InputMaterials[i2].Name + this.Blocks[i].Inventory.InputMaterials[i2].Unit] = [{id: i, value: this.Blocks[i].Inventory.InputMaterials[i2]}];
           } else {
-            expMap.get(this.Blocks[i].Inventory.InputMaterials[i2].Name + this.Blocks[i].Inventory.InputMaterials[i2].Unit).Amount += this.Blocks[i].Inventory.InputMaterials[i2].Amount * this.Blocks[i].Repeat;
+            expMap.get(this.Blocks[i].Inventory.InputMaterials[i2].Name + this.Blocks[i].Inventory.InputMaterials[i2].Unit).Amount += this.Blocks[i].Inventory.InputMaterials[i2].Amount * (this.Blocks[i].Repeat + 1);
             inputMap[this.Blocks[i].Inventory.InputMaterials[i2].Name + this.Blocks[i].Inventory.InputMaterials[i2].Unit].push({id: i, value: this.Blocks[i].Inventory.InputMaterials[i2]});
           }
         }
@@ -63,7 +63,7 @@ export class Exp {
             outputMap[this.Blocks[i].Inventory.OutputMaterials[i2].Name + this.Blocks[i].Inventory.OutputMaterials[i2].Unit] = [{id: i, value: this.Blocks[i].Inventory.OutputMaterials[i2]}];
 
           } else {
-            outExpMap.get(this.Blocks[i].Inventory.OutputMaterials[i2].Name + this.Blocks[i].Inventory.OutputMaterials[i2].Unit).Amount += this.Blocks[i].Inventory.OutputMaterials[i2].Amount * this.Blocks[i].Repeat;
+            outExpMap.get(this.Blocks[i].Inventory.OutputMaterials[i2].Name + this.Blocks[i].Inventory.OutputMaterials[i2].Unit).Amount += this.Blocks[i].Inventory.OutputMaterials[i2].Amount * (this.Blocks[i].Repeat + 1);
             outputMap[this.Blocks[i].Inventory.OutputMaterials[i2].Name + this.Blocks[i].Inventory.OutputMaterials[i2].Unit].push({id: i, value: this.Blocks[i].Inventory.OutputMaterials[i2]});
           }
         }
